@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -20,9 +20,19 @@ class LoginScreen extends StatelessWidget {
               Text(
                 'Welcome\n to Calcutta Ref!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: GoogleFonts.ubuntu(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Text('Hope you are well today'),
+              Text(
+                'Hope you are well today',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   fixedSize: Size(MediaQuery.of(context).size.width * 0.8, 50),
@@ -33,12 +43,23 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-              Text(
-                'Continue with phone number',
-                style: TextStyle(fontSize: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PhoneAuth()));
+                },
+                child: Text(
+                  'Continue with phone number',
+                  style:
+                      GoogleFonts.montserrat(fontSize: 18, color: Colors.black),
+                ),
               ),
             ],
           ),
@@ -65,6 +86,22 @@ class _PhoneAuthState extends State<PhoneAuth> {
   String currentText = "";
   final formKey = GlobalKey<FormState>();
 
+  int _start = 40;
+  Timer? _timer;
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_start == 0) {
+        setState(() {
+          _timer!.cancel();
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +109,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -91,112 +130,138 @@ class _PhoneAuthState extends State<PhoneAuth> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+          padding: EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 40),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Register'),
-              Text('Phone number'),
-              InternationalPhoneNumberInput(
-                onInputChanged: (PhoneNumber number) {
-                  print(number.phoneNumber);
-                },
-                onInputValidated: (bool value) {
-                  print(value);
-                },
-                countries: ['IN'],
-                selectorConfig: SelectorConfig(
-                  selectorType: PhoneInputSelectorType.DROPDOWN,
-                  setSelectorButtonAsPrefixIcon: true,
-                ),
-                ignoreBlank: false,
-                autoValidateMode: AutovalidateMode.disabled,
-                initialValue: number,
-                textFieldController: textPhone,
-                formatInput: false,
-                keyboardType: TextInputType.numberWithOptions(
-                    signed: true, decimal: true),
-                inputBorder: InputBorder.none,
-                onSaved: (PhoneNumber number) {
-                  print('On Saved: $number');
-                },
-              ),
-              Text(
-                  "Enter your phone number and we'll send you\na four-digit SMS code"),
-              Text('Verfication code'),
-              Form(
-                key: formKey,
-                child: PinCodeTextField(
-                  appContext: context,
-                  pastedTextStyle: TextStyle(
-                    color: Colors.green.shade600,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  length: 6,
-                  obscureText: true,
-                  obscuringCharacter: '*',
-                  blinkWhenObscuring: true,
-                  animationType: AnimationType.fade,
-                  validator: (v) {
-                    if (v!.length < 3) {
-                      return "I'm from validator";
-                    } else {
-                      return null;
-                    }
-                  },
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 50,
-                    fieldWidth: 40,
-                    activeFillColor: Colors.grey.shade400,
-                    activeColor: Colors.grey.shade400,
-                    inactiveColor: Colors.grey.shade400,
-                    inactiveFillColor: Colors.grey.shade400,
-                    selectedFillColor: Colors.grey.shade400,
-                    selectedColor: Colors.grey.shade400,
-                  ),
-                  cursorColor: Colors.black,
-                  animationDuration: Duration(milliseconds: 300),
-                  enableActiveFill: true,
-                  errorAnimationController: errorController,
-                  controller: textPin,
-                  keyboardType: TextInputType.number,
-                  boxShadows: [
-                    BoxShadow(
-                      offset: Offset(0, 1),
-                      color: Colors.black12,
-                      blurRadius: 10,
-                    )
-                  ],
-                  onCompleted: (v) {
-                    print("Completed");
-                  },
-                  // onTap: () {
-                  //   print("Pressed");
-                  // },
-                  onChanged: (value) {
-                    print(value);
-                    setState(() {
-                      currentText = value;
-                    });
-                  },
-                  beforeTextPaste: (text) {
-                    print("Allowing to paste $text");
-                    //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                    //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                    return true;
-                  },
-                ),
-              ),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.watch_later,
-                    color: Colors.grey.shade400,
+                  Text(
+                    'Register',
+                    style: GoogleFonts.ubuntu(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text('Code\'ll be active for another 40 seconds')
+                  SizedBox(height: 25),
+                  Text(
+                    'Phone number',
+                    style: GoogleFonts.ubuntu(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 13),
+                  InternationalPhoneNumberInput(
+                    onInputChanged: (PhoneNumber number) {
+                      print(number.phoneNumber);
+                    },
+                    onInputValidated: (bool value) {
+                      print(value);
+                    },
+                    countries: ['IN'],
+                    selectorConfig: SelectorConfig(
+                      selectorType: PhoneInputSelectorType.DROPDOWN,
+                      setSelectorButtonAsPrefixIcon: true,
+                    ),
+                    ignoreBlank: false,
+                    autoValidateMode: AutovalidateMode.disabled,
+                    initialValue: number,
+                    textFieldController: textPhone,
+                    formatInput: false,
+                    keyboardType: TextInputType.numberWithOptions(
+                        signed: true, decimal: true),
+                    inputBorder: InputBorder.none,
+                    onSaved: (PhoneNumber number) {
+                      print('On Saved: $number');
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  Text(
+                    "Enter your phone number and we'll send you\na four-digit SMS code",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  Text(
+                    'Verfication code',
+                    style: GoogleFonts.ubuntu(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Form(
+                    key: formKey,
+                    child: PinCodeTextField(
+                      appContext: context,
+                      pastedTextStyle: TextStyle(
+                        color: Colors.green.shade600,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      length: 6,
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      blinkWhenObscuring: true,
+                      animationType: AnimationType.fade,
+                      validator: (v) {
+                        if (v!.length < 3) {
+                          return "I'm from validator";
+                        } else {
+                          return null;
+                        }
+                      },
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(5),
+                        fieldHeight: 50,
+                        fieldWidth: 40,
+                        activeFillColor: Colors.grey.shade200,
+                        activeColor: Colors.grey.shade200,
+                        inactiveColor: Colors.grey.shade200,
+                        inactiveFillColor: Colors.grey.shade200,
+                        selectedFillColor: Colors.grey.shade200,
+                        selectedColor: Colors.grey.shade200,
+                      ),
+                      cursorColor: Colors.black,
+                      animationDuration: Duration(milliseconds: 300),
+                      enableActiveFill: true,
+                      errorAnimationController: errorController,
+                      controller: textPin,
+                      keyboardType: TextInputType.number,
+
+                      onCompleted: (v) {
+                        print("Completed");
+                      },
+                      // onTap: () {
+                      //   print("Pressed");
+                      // },
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          currentText = value;
+                        });
+                      },
+                      beforeTextPaste: (text) {
+                        print("Allowing to paste $text");
+                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                        return true;
+                      },
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.watch_later,
+                        color: Colors.grey.shade400,
+                      ),
+                      Text('Code\'ll be active for another $_start seconds')
+                    ],
+                  ),
                 ],
               ),
               TextButton(
@@ -206,13 +271,35 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       borderRadius: BorderRadius.circular(10)),
                   backgroundColor: Color(0xFF2A6049),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  startTimer();
+                },
                 child: Text(
                   'Next',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+      bottomSheet: Container(
+        height: 35,
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            'I already have an account',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey.shade400,
+            ),
           ),
         ),
       ),
