@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "637259949064",
+    "project_id": "calcutta-ref",
+    "storage_bucket": "calcutta-ref.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637259949064:android:347735428201e5b4255dbd",
+        "android_client_info": {
+          "package_name": "com.faizm55212.calcutta_ref"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637259949064-80iu8i6n11qshi6k331fhud7e65j38uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_xjNh59B40mMBrzrJR48egYXHgbVfx2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637259949064-80iu8i6n11qshi6k331fhud7e65j38uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
