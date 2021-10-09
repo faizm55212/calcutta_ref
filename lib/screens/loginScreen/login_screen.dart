@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:calcutta_ref/controllers/AuthController.dart';
+import 'package:calcutta_ref/screens/homeScreen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -82,7 +85,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
   PhoneNumber number = PhoneNumber(phoneNumber: "0000000000", isoCode: 'IN');
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
+  AuthController _authController = Get.find<AuthController>();
   bool hasError = false;
+  bool processing = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
 
@@ -155,7 +160,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   SizedBox(height: 13),
                   InternationalPhoneNumberInput(
                     onInputChanged: (PhoneNumber number) {
-                      print(number.phoneNumber);
+                      print(textPhone.text);
                     },
                     onInputValidated: (bool value) {
                       print(value);
@@ -271,8 +276,18 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       borderRadius: BorderRadius.circular(10)),
                   backgroundColor: Color(0xFF2A6049),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   startTimer();
+                  if (textPhone.text == "9999999999") {
+                  } else {
+                    if (!processing) {
+                      processing = await _authController.phoneAuth(
+                          "+91" + textPhone.text.trim(), context);
+                    } else {
+                      _authController.signInWithPhoneNumber(
+                          textPin.text, context);
+                    }
+                  }
                 },
                 child: Text(
                   'Next',
