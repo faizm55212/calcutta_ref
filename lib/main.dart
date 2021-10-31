@@ -1,6 +1,8 @@
 import 'package:calcutta_ref/controllers/AuthController.dart';
+import 'package:calcutta_ref/screens/homeScreen/home_screen.dart';
 import 'package:calcutta_ref/screens/loginScreen/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +17,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(AuthController());
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ScreenUtilInit(
+      designSize: Size(360, 705),
+      builder: () => GetMaterialApp(
+        title: 'Calcutta Ref',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomeScreen(),
       ),
-      home: LoginScreen(),
     );
   }
 }

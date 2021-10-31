@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:calcutta_ref/controllers/AuthController.dart';
-import 'package:calcutta_ref/screens/homeScreen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
