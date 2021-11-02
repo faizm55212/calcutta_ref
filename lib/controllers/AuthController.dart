@@ -1,11 +1,13 @@
-import 'package:calcutta_ref/screens/homeScreen/home_screen.dart';
+import 'package:calcutta_ref/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   late User user;
   bool result = false;
   String _verificationId = '';
@@ -23,8 +25,8 @@ class AuthController extends GetxController {
               msg: "Logged In: ${_auth.currentUser!.uid}",
               backgroundColor: Colors.black,
             );
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SplashScreen()));
           },
           verificationFailed: (FirebaseAuthException _authException) {
             Fluttertoast.showToast(
@@ -62,12 +64,42 @@ class AuthController extends GetxController {
       user = (await _auth.signInWithCredential(credential)).user!;
 
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => SplashScreen()));
       return user.uid;
 
       // showSnackbar("Successfully signed in UID: ${user.uid}");
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String?> signInwithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      user = (await _auth.signInWithCredential(credential)).user!;
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SplashScreen()));
+      return user.uid;
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      Fluttertoast.showToast(
+        msg: "Enter Otp",
+        backgroundColor: Colors.black,
+      );
+      throw e;
+    }
+  }
+
+  Future<void> signOutFromGoogle() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
   }
 }

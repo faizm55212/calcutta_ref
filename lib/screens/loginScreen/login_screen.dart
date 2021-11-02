@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,7 +12,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthController _authController = Get.find<AuthController>();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
@@ -23,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                 'Welcome\n to Calcutta Ref!',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.ubuntu(
-                  fontSize: 32,
+                  fontSize: 34,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -35,6 +38,17 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
+              Center(
+                child: Container(
+                  width: 305.w,
+                  height: 300.h,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/vectors/login_main.jpg'),
+                    ),
+                  ),
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   fixedSize: Size(MediaQuery.of(context).size.width * 0.8, 50),
@@ -42,12 +56,14 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   backgroundColor: Color(0xFF2A6049),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _authController.signInwithGoogle(context);
+                },
                 child: Text(
                   'Login',
                   style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 20,
                     color: Colors.white,
                   ),
                 ),
@@ -289,7 +305,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   }
                 },
                 child: Text(
-                  'Next',
+                  processing ? 'Done' : 'Next',
                   style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
