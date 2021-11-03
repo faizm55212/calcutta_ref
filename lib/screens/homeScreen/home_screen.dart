@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -38,27 +39,90 @@ class _SliderHomeState extends State<SliderHome> {
         sliderMain: HomeScreen(),
         sliderMenu: SafeArea(
           child: Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                      FirebaseAuth.instance.currentUser!.photoURL ?? ''),
-                  radius: 20,
+                Center(
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        FirebaseAuth.instance.currentUser!.photoURL ?? ''),
+                    radius: 50,
+                  ),
                 ),
-                Text('Hello ${FirebaseAuth.instance.currentUser!.displayName}'),
-                TextButton(
-                    onPressed: () {
-                      _authController.signOutFromGoogle();
-                    },
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.black),
-                    )),
+                SizedBox(height: 20),
+                Center(
+                  child: Text(
+                    'Hello...\n${FirebaseAuth.instance.currentUser!.displayName}',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: 20),
+                DrawerTile(
+                  iconData: 'assets/icons/drawer_home.svg',
+                  title: 'Home',
+                  onPressed: () {},
+                  color: Colors.black,
+                ),
+                SizedBox(height: 20),
+                DrawerTile(
+                  iconData: 'assets/icons/drawer_profile.svg',
+                  title: 'Profile',
+                  onPressed: () {},
+                  color: Colors.green,
+                ),
+                SizedBox(height: 20),
+                DrawerTile(
+                  iconData: 'assets/icons/drawer_contacts.svg',
+                  title: 'Contact Us',
+                  onPressed: () {},
+                  color: Colors.blue,
+                ),
+                SizedBox(height: 20),
+                DrawerTile(
+                  iconData: 'assets/icons/drawer_logout.svg',
+                  title: 'Logout',
+                  onPressed: () {
+                    _authController.signOutFromGoogle();
+                  },
+                  color: Colors.red,
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DrawerTile extends StatelessWidget {
+  final String iconData;
+  final String title;
+  final Function onPressed;
+  final Color color;
+  DrawerTile({
+    required this.iconData,
+    required this.title,
+    required this.onPressed,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () {
+        onPressed();
+      },
+      icon: SvgPicture.asset(
+        iconData,
+        height: 26,
+      ),
+      label: Text(
+        title,
+        style: TextStyle(color: Colors.black),
       ),
     );
   }
@@ -182,11 +246,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.house_siding_outlined,
-                                size: 60,
-                                color: Colors.black,
+                              SvgPicture.asset(
+                                'assets/icons/location_home.svg',
+                                height: 50.sp,
                               ),
+                              SizedBox(height: 10),
                               Text(
                                 'House',
                                 style: TextStyle(color: Colors.black),
@@ -216,11 +280,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.house_siding_outlined,
-                                size: 60,
-                                color: Colors.black,
+                              SvgPicture.asset(
+                                'assets/icons/location_office.svg',
+                                height: 50.sp,
                               ),
+                              SizedBox(height: 10),
                               Text(
                                 'Office',
                                 style: TextStyle(color: Colors.black),
@@ -282,9 +346,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Icon(
-                                            Icons.house_siding_outlined,
-                                            size: 30.sp,
+                                          SvgPicture.asset(
+                                            'assets/icons/${snapshot.data![index]['icon']}.svg',
+                                            height: 30.sp,
                                           ),
                                           SizedBox(width: 10),
                                           Text(

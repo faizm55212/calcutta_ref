@@ -7,7 +7,8 @@ class Api {
     QuerySnapshot snapshot = await _firestore
         .collection('Appliances')
         .where("location", arrayContains: location)
-        .limit(3)
+        .orderBy('timestamp', descending: true)
+        .limit(4)
         .get();
     return snapshot.docs;
   }

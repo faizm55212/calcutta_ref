@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:calcutta_ref/controllers/AuthController.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -44,12 +45,13 @@ class LoginScreen extends StatelessWidget {
                   height: 300.h,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/vectors/login_main.jpg'),
+                      image: AssetImage('assets/vectors/login_main.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              TextButton(
+              TextButton.icon(
                 style: TextButton.styleFrom(
                   fixedSize: Size(MediaQuery.of(context).size.width * 0.8, 50),
                   shape: RoundedRectangleBorder(
@@ -59,7 +61,11 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   _authController.signInwithGoogle(context);
                 },
-                child: Text(
+                icon: SvgPicture.asset(
+                  'assets/icons/google.svg',
+                  height: 24,
+                ),
+                label: Text(
                   'Login',
                   style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.bold,
