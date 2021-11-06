@@ -55,8 +55,22 @@ class _SliderHomeState extends State<SliderHome> {
                 SizedBox(height: 20),
                 Center(
                   child: Text(
-                    'Hello...\n${FirebaseAuth.instance.currentUser!.displayName}',
+                    'Hello.',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    '${FirebaseAuth.instance.currentUser!.displayName}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),

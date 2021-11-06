@@ -17,7 +17,7 @@ class AuthController extends GetxController {
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: _phoneNumber,
-          timeout: const Duration(seconds: 5),
+          timeout: const Duration(seconds: 40),
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
             await _auth.signInWithCredential(phoneAuthCredential);

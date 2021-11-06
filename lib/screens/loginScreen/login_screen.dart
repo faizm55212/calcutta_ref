@@ -302,8 +302,11 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   if (textPhone.text == "9999999999") {
                   } else {
                     if (!processing) {
-                      processing = await _authController.phoneAuth(
+                      bool success = await _authController.phoneAuth(
                           "+91" + textPhone.text.trim(), context);
+                      setState(() {
+                        processing = success;
+                      });
                     } else {
                       _authController.signInWithPhoneNumber(
                           textPin.text, context);
