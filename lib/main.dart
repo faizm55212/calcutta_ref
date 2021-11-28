@@ -1,5 +1,4 @@
 import 'package:calcutta_ref/controllers/AuthController.dart';
-import 'package:calcutta_ref/screens/service_screen/service_screen.dart';
 import 'package:calcutta_ref/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: ServiceScreen(),
+        home: SplashScreen(),
       ),
     );
   }

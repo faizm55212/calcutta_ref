@@ -1,5 +1,6 @@
 import 'package:calcutta_ref/controllers/AuthController.dart';
 import 'package:calcutta_ref/controllers/api_firebase.dart';
+import 'package:calcutta_ref/screens/service_screen/service_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -311,72 +312,70 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 30),
                   FutureBuilder<List<DocumentSnapshot>>(
-                      future: Api().fetchApp(
-                          _locationIndex.value == 0 ? 'House' : 'Office'),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 55),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    _serviceIndex.value = index;
-                                  },
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
+                    future: Api().fetchAppliances(
+                        _locationIndex.value == 0 ? 'House' : 'Office', true),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 55),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Obx(
+                              () => GestureDetector(
+                                onTap: () {
+                                  _serviceIndex.value = index;
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    color: _serviceIndex.value == index
+                                        ? Colors.deepOrangeAccent.shade100
+                                            .withAlpha(40)
+                                        : Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      width:
+                                          _serviceIndex.value == index ? 2 : 0,
                                       color: _serviceIndex.value == index
                                           ? Colors.deepOrangeAccent.shade100
                                               .withAlpha(40)
                                           : Colors.grey.shade100,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        width: _serviceIndex.value == index
-                                            ? 2
-                                            : 0,
-                                        color: _serviceIndex.value == index
-                                            ? Colors.deepOrangeAccent.shade100
-                                                .withAlpha(40)
-                                            : Colors.grey.shade100,
-                                      ),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/${snapshot.data![index]['icon']}.svg',
-                                            height: 30.sp,
-                                          ),
-                                          SizedBox(width: 10),
-                                          Text(
-                                              '${snapshot.data![index]['name']}'),
-                                        ],
-                                      ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/${snapshot.data![index]['icon']}.svg',
+                                          height: 30.sp,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                            '${snapshot.data![index]['name']}'),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        );
-                      }),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                   SizedBox(height: 30),
                   Center(
                     child: TextButton(
@@ -387,7 +386,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(10)),
                         backgroundColor: Color(0xFF2A6049),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ServiceScreen(
+                              locationIndex: _locationIndex.value,
+                              applianceIndex: _serviceIndex.value,
+                            ),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Book Now',
                         style: GoogleFonts.montserrat(
