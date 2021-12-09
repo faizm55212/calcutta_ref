@@ -1,4 +1,5 @@
 import 'package:calcutta_ref/screens/splash_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -84,6 +85,15 @@ class AuthController extends GetxController {
         idToken: googleSignInAuthentication.idToken,
       );
       user = (await _auth.signInWithCredential(credential)).user!;
+      var userdoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+      if (!userdoc.exists) {
+        await FirebaseFirestore.instance.collection('Users').doc(user.uid).set(
+            {'name': user.displayName, 'image': user.photoURL},
+            SetOptions(merge: true));
+      }
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SplashScreen()));

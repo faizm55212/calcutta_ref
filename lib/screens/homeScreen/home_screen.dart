@@ -1,5 +1,6 @@
 import 'package:calcutta_ref/controllers/AuthController.dart';
 import 'package:calcutta_ref/controllers/api_firebase.dart';
+import 'package:calcutta_ref/screens/aboutScreen/about_screen.dart';
 import 'package:calcutta_ref/screens/service_screen/service_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,12 +23,16 @@ class SliderHome extends StatefulWidget {
 
 class _SliderHomeState extends State<SliderHome> {
   AuthController _authController = Get.find<AuthController>();
+  GlobalKey<SliderMenuContainerState> _key =
+      new GlobalKey<SliderMenuContainerState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF2A6049),
       body: SliderMenuContainer(
         appBarHeight: 60,
+        key: _key,
         appBarColor: Color(0xFF2A6049),
         title: Text(''),
         drawerIconColor: Colors.white,
@@ -78,21 +84,33 @@ class _SliderHomeState extends State<SliderHome> {
                 DrawerTile(
                   iconData: 'assets/icons/drawer_home.svg',
                   title: 'Home',
-                  onPressed: () {},
+                  onPressed: () {
+                    _key.currentState!.closeDrawer();
+                  },
                   color: Colors.black,
                 ),
                 SizedBox(height: 20),
                 DrawerTile(
                   iconData: 'assets/icons/drawer_profile.svg',
                   title: 'Profile',
-                  onPressed: () {},
+                  onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "Comming Soon",
+                      backgroundColor: Colors.black,
+                    );
+                    _key.currentState!.closeDrawer();
+                  },
                   color: Colors.green,
                 ),
                 SizedBox(height: 20),
                 DrawerTile(
                   iconData: 'assets/icons/drawer_contacts.svg',
-                  title: 'Contact Us',
-                  onPressed: () {},
+                  title: 'About Us',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AboutScreen()));
+                    _key.currentState!.closeDrawer();
+                  },
                   color: Colors.blue,
                 ),
                 SizedBox(height: 20),
