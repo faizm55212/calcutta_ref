@@ -44,7 +44,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 child: Column(
                   children: [
                     Container(
-                      height: 220,
+                      height: 200.h,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: Color(0xFFE8F0F2),
@@ -62,7 +62,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             Container(
                               width: 250,
                               child: Text(
-                                'Home Appliance Repair',
+                                widget.locationIndex == 0
+                                    ? 'Home Appliance Repair'
+                                    : 'Office Appliance Repair',
                                 style: GoogleFonts.ubuntu(
                                   fontSize: 30.sp,
                                   color: Colors.black,
@@ -286,7 +288,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             'warranty': false,
                           }, SetOptions(merge: true));
                           Fluttertoast.showToast(
-                            msg: "Booked",
+                            msg: "Thanks and will be contaced shortly",
                             backgroundColor: Colors.black,
                           );
                           Navigator.pop(context);
@@ -305,7 +307,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               ),
               Positioned(
-                top: 15,
+                top: 15.h,
                 right: 5,
                 width: 130,
                 child: Container(
