@@ -224,29 +224,78 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 40),
-                  CarouselSlider(
-                    options: CarouselOptions(height: 100.0),
-                    items: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                  FutureBuilder<List<DocumentSnapshot>>(
+                    future: Api().fetchOffers(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      }
+                      return CarouselSlider.builder(
+                        options: CarouselOptions(height: 100.0),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, ind, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
                               children: [
-                                Text('Repairing'),
-                                Text(
-                                    'We offer professional repairing\nservice on demand'),
-                                Text('\$45hr'),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${snapshot.data![ind]['name']}',
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 180,
+                                      child: Text(
+                                        '${snapshot.data![ind]['description']}',
+                                        style: GoogleFonts.ubuntu(
+                                          fontSize: 12.sp,
+                                          color: Colors.grey.shade500,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '₹${snapshot.data![ind]['offer']}hr',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: Color(0xFF345B63),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          );
+                        },
+                      );
+                    },
                   ),
+                  SizedBox(height: 20),
                   Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text('Book A Service For')),
+                    padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Book A Service For',
+                      style: GoogleFonts.ubuntu(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 20),
                   TabBar(
                     controller: tabController,
@@ -261,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Obx(
                         () => Container(
                           width: 160.w,
-                          height: 120.h,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: _locationIndex.value == 0
                                 ? Colors.deepOrangeAccent.shade100.withAlpha(40)
@@ -295,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Obx(
                         () => Container(
                           width: 160.w,
-                          height: 120.h,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: _locationIndex.value == 1
                                 ? Colors.deepOrangeAccent.shade100.withAlpha(40)

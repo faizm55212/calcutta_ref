@@ -23,6 +23,12 @@ class Api {
     return snapshot.docs;
   }
 
+  Future<List<DocumentSnapshot>> fetchOffers() async {
+    QuerySnapshot snapshot = await _firestore.collection('Offers').get();
+
+    return snapshot.docs;
+  }
+
   Future<DocumentSnapshot> fetchServices(String appliance) async {
     DocumentSnapshot snapshot =
         await _firestore.collection('Appliances').doc(appliance).get();

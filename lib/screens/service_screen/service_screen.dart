@@ -82,7 +82,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                             ),
                             Text(
-                              '\$45hr',
+                              '₹45hr',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 color: Color(0xFF345B63),
