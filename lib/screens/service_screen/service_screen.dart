@@ -1,6 +1,6 @@
-import 'package:calcutta_ref/controllers/AuthController.dart';
 import 'package:calcutta_ref/controllers/api_firebase.dart';
 import 'package:calcutta_ref/controllers/global_constans.dart';
+import 'package:calcutta_ref/screens/profileScreen/update_address.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker_widget/date_time_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class ServiceScreen extends StatefulWidget {
   int locationIndex = 0;
   int applianceIndex = 0;
@@ -274,24 +275,36 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           backgroundColor: Color(0xFF345B63),
                         ),
                         onPressed: () async {
-                          await FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(loggedInUser!.uid)
-                              .collection('bookings')
-                              .doc()
-                              .set({
-                            'category': applianceName.value,
-                            'date_scheduled':
-                                scheduledTime.millisecondsSinceEpoch,
-                            'description': serviceName.value,
-                            'time_stamp': DateTime.now().millisecondsSinceEpoch,
-                            'warranty': false,
-                          }, SetOptions(merge: true));
-                          Fluttertoast.showToast(
-                            msg: "Thanks and will be contaced shortly",
-                            backgroundColor: Colors.black,
-                          );
-                          Navigator.pop(context);
+                          DocumentSnapshot docsnap = await Api().fetchProfile();
+                          if (docsnap['address'] != '' &&
+                              docsnap['mobile'] != 0) {
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(loggedInUser!.uid)
+                                .collection('bookings')
+                                .doc()
+                                .set({
+                              'category': applianceName.value,
+                              'date_scheduled':
+                                  scheduledTime.millisecondsSinceEpoch,
+                              'description': serviceName.value,
+                              'time_stamp':
+                                  DateTime.now().millisecondsSinceEpoch,
+                              'warranty': false,
+                            }, SetOptions(merge: true));
+                            Fluttertoast.showToast(
+                              msg: "Thanks and will be contaced shortly",
+                              backgroundColor: Colors.black,
+                            );
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateAddress(),
+                              ),
+                            );
+                          }
                         },
                         child: Text(
                           'Confirm',

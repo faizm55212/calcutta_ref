@@ -90,13 +90,19 @@ class AuthController extends GetxController {
           .doc(user.uid)
           .get();
       if (!userdoc.exists) {
-        await FirebaseFirestore.instance.collection('Users').doc(user.uid).set(
-            {'name': user.displayName, 'image': user.photoURL},
-            SetOptions(merge: true));
+        await FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+          'name': user.displayName,
+          'image': user.photoURL,
+          'email': user.email,
+          'mobile': user.phoneNumber != null ? user.phoneNumber : 0,
+          'address': '',
+          'street': '',
+          'landMark': '',
+          'city': '',
+          'pincode': 0,
+        }, SetOptions(merge: true));
       }
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SplashScreen()));
       return user.uid;
     } on FirebaseAuthException catch (e) {
       print(e.message);

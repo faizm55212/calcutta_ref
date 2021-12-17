@@ -1,6 +1,7 @@
 import 'package:calcutta_ref/controllers/AuthController.dart';
 import 'package:calcutta_ref/controllers/api_firebase.dart';
 import 'package:calcutta_ref/screens/aboutScreen/about_screen.dart';
+import 'package:calcutta_ref/screens/profileScreen/update_address.dart';
 import 'package:calcutta_ref/screens/service_screen/service_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -94,10 +94,10 @@ class _SliderHomeState extends State<SliderHome> {
                   iconData: 'assets/icons/drawer_profile.svg',
                   title: 'Profile',
                   onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "Comming Soon",
-                      backgroundColor: Colors.black,
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateAddress()));
                     _key.currentState!.closeDrawer();
                   },
                   color: Colors.green,

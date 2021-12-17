@@ -1,5 +1,5 @@
+import 'package:calcutta_ref/controllers/global_constans.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class Api {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -29,10 +29,47 @@ class Api {
     return snapshot.docs;
   }
 
+  Future<DocumentSnapshot> fetchProfile() async {
+    DocumentSnapshot snapshot =
+        await _firestore.collection('Users').doc(loggedInUser!.uid).get();
+
+    return snapshot;
+  }
+
   Future<DocumentSnapshot> fetchServices(String appliance) async {
     DocumentSnapshot snapshot =
         await _firestore.collection('Appliances').doc(appliance).get();
 
     return snapshot;
+  }
+
+  updateProfile({
+    String? name,
+    int? mobile,
+    String? email,
+    String? street,
+    String? landMark,
+    String? city,
+    int? pincode,
+  }) {
+    // if (loggedInUser!.phoneNumber == null) {
+    //   FirebaseAuth.instance.currentUser!.updatePhoneNumber(PhoneAuthCredential);
+    // }
+    FirebaseFirestore.instance.collection('Users').doc(loggedInUser!.uid).set({
+      'name': name,
+      'mobile': mobile,
+      'email': email,
+      'street': street,
+      'landMark': landMark,
+      'city': city,
+      'pincode': pincode,
+      'address': street! +
+          ', ' +
+          landMark! +
+          ', ' +
+          city! +
+          ' - ' +
+          pincode!.toString(),
+    }, SetOptions(merge: true));
   }
 }
