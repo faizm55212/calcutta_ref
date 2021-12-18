@@ -178,6 +178,7 @@ class UpdateAddress extends StatelessWidget {
                             height: 40.h,
                             width: 300.w,
                             child: TextFormField(
+                              textCapitalization: TextCapitalization.words,
                               initialValue: snapshot.data!['street'],
                               onChanged: (input) {
                                 street = input;
@@ -200,6 +201,7 @@ class UpdateAddress extends StatelessWidget {
                             height: 40.h,
                             width: 300.w,
                             child: TextFormField(
+                              textCapitalization: TextCapitalization.words,
                               initialValue: snapshot.data!['landMark'],
                               onChanged: (input) {
                                 landMark = input;
@@ -223,6 +225,7 @@ class UpdateAddress extends StatelessWidget {
                                 height: 40.h,
                                 width: 140.w,
                                 child: TextFormField(
+                                  textCapitalization: TextCapitalization.words,
                                   initialValue: snapshot.data!['city'],
                                   onChanged: (input) {
                                     city = input;
@@ -243,6 +246,7 @@ class UpdateAddress extends StatelessWidget {
                                 height: 40.h,
                                 width: 140.w,
                                 child: TextFormField(
+                                  textCapitalization: TextCapitalization.words,
                                   initialValue: snapshot.data!['pincode'] != 0
                                       ? snapshot.data!['pincode'].toString()
                                       : null,
